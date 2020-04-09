@@ -1,0 +1,10 @@
+C:\Users\Константин\source\repos\Balls\Balls\bin\Debug\Balls.exe.config
+C:\Users\Константин\source\repos\Balls\Balls\bin\Debug\Balls.exe
+C:\Users\Константин\source\repos\Balls\Balls\bin\Debug\Balls.pdb
+C:\Users\Константин\source\repos\Balls\Balls\obj\Debug\Balls.csprojAssemblyReference.cache
+C:\Users\Константин\source\repos\Balls\Balls\obj\Debug\Balls.Form1.resources
+C:\Users\Константин\source\repos\Balls\Balls\obj\Debug\Balls.Properties.Resources.resources
+C:\Users\Константин\source\repos\Balls\Balls\obj\Debug\Balls.csproj.GenerateResource.cache
+C:\Users\Константин\source\repos\Balls\Balls\obj\Debug\Balls.csproj.CoreCompileInputs.cache
+C:\Users\Константин\source\repos\Balls\Balls\obj\Debug\Balls.exe
+C:\Users\Константин\source\repos\Balls\Balls\obj\Debug\Balls.pdb
