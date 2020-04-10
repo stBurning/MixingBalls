@@ -19,6 +19,7 @@ namespace Balls{
         BallProducer[] ballProducers;
         BallCommonData commonData;
         BallConsumer ballConsumer;
+        bool flag = true;
         public Form1(){
             InitializeComponent();
             g = panel1.CreateGraphics();
@@ -28,18 +29,21 @@ namespace Balls{
         }
         private void panel1_Click(object sender, EventArgs e) {
 
+            if (flag) {
+                Point consumerPos = new Point(panel1.Width / 2 - radius, panel1.Height / 2 - radius);
+                commonData = new BallCommonData(3, animator, consumerPos);
+                ballConsumer = new BallConsumer(commonData, rect, consumerPos.X, consumerPos.Y, radius, animator);
+                ballProducers = new BallProducer[3];
+                ballProducers[0] = new BallProducer(commonData, 0, panel1.Width / 2 - radius, 0, radius, rect, animator, consumerPos, Color.Red);
+                ballProducers[1] = new BallProducer(commonData, 1, 0, panel1.Height / 2 - radius, radius, rect, animator, consumerPos, Color.Green);
+                ballProducers[2] = new BallProducer(commonData, 2, panel1.Width - 2 * radius, panel1.Height / 2 - radius, radius, rect, animator, consumerPos, Color.Blue);
+                animator.Start(ballConsumer);
+                animator.Start(ballProducers[0]);
+                animator.Start(ballProducers[1]);
+                animator.Start(ballProducers[2]);
+                flag = false;
+            }
             
-            Point consumerPos = new Point(panel1.Width / 2 - radius, panel1.Height / 2 - radius);
-            commonData = new BallCommonData(3, animator,consumerPos);
-            ballConsumer = new BallConsumer(commonData, rect, consumerPos.X, consumerPos.Y, radius, animator);
-            ballProducers = new BallProducer[3];
-            ballProducers[0] = new BallProducer(commonData, 0, panel1.Width/2-radius, 0, radius, rect, animator, consumerPos);
-            ballProducers[1] = new BallProducer(commonData, 1, 0, panel1.Height/2-radius, radius, rect, animator, consumerPos);
-            ballProducers[2] = new BallProducer(commonData, 2, panel1.Width-2*radius, panel1.Height / 2 - radius, radius, rect, animator, consumerPos);
-            animator.Start(ballConsumer);
-            animator.Start(ballProducers[0]);
-            animator.Start(ballProducers[1]);
-            animator.Start(ballProducers[2]);
             
             
         }

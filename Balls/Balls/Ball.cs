@@ -23,15 +23,18 @@ namespace Balls {
         private Brush brush;
 
         private Rectangle rectangle;
-        public Ball(Rectangle rectangle, int x, int y, int radius, Point destination): base(rectangle){
+        public Ball(Rectangle rectangle, int x, int y, int radius, Point destination, Color color): base(rectangle){
             X = x; Y = y; Radius = radius;
             this.destination = destination;
+           
             Random rnd = new Random((int)DateTime.Now.Ticks);
-            Color = Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+            this.Color = Color.FromArgb(rnd.Next(0, 255), color.R, color.G, color.B);
             this.brush = new SolidBrush(Color);
         }
         public override void Draw(Graphics g) {
+            Monitor.Enter(g);
             g.FillEllipse(brush, X, Y, Radius * 2, Radius * 2);
+            Monitor.Exit(g);
         }
 
         public override void Update(Rectangle rectangle) {
@@ -100,11 +103,13 @@ namespace Balls {
         Rectangle rectangle;
         BallCommonData data;
         Point destination;
+        Color color;
         int id;
-        public BallProducer(BallCommonData data, int id, int x, int y, int radius, Rectangle rect, Animator animator, Point destination): base(rect){
+        public BallProducer(BallCommonData data, int id, int x, int y, int radius, Rectangle rect, Animator animator, Point destination, Color color): base(rect){
             position = new Point(x, y);
             this.destination = destination;
             this.data = data;
+            this.color = color;
             this.radius = radius;
             this.id = id;
             if (_animator == null) _animator = animator;
@@ -113,12 +118,11 @@ namespace Balls {
         }
 
         protected void Produce() {
-            var ball = new Ball(rectangle, position.X, position.Y, radius, destination);
+            var ball = new Ball(rectangle, position.X, position.Y, radius, destination, color);
             data.Add(id, ball);
             Monitor.Enter(_animator);
             _animator.Start(ball);
             Monitor.Exit(_animator);
-           
             var waitTime = rand.Next(1500, 6000);
             Thread.Sleep(waitTime);
         }
@@ -162,8 +166,10 @@ namespace Balls {
         }
 
         public override void Draw(Graphics g) {
+            Monitor.Enter(g);
             g.DrawEllipse(pen, position.X, position.Y, radius * 2, radius * 2);
             g.FillEllipse(brush, position.X, position.Y, radius * 2, radius * 2);
+            Monitor.Exit(g);
         }
 
         public override void Update(Rectangle rectangle) {
@@ -172,13 +178,9 @@ namespace Balls {
 
         protected void Consume() {
                 var value = data.GetNextData();
-                int R = 0, G = 0, B = 0;
-                for(int i = 0; i < 3; i++) {
-                    R += value[i].Color.R;
-                    G += value[i].Color.G;
-                    B += value[i].Color.B;
-                }
-                color = Color.FromArgb((int)((double)R / 3), (int)((double)G / 3), (int)((double)B / 3));
+               
+                color = Color.FromArgb(value[0].Color.A, value[1].Color.A, value[2].Color.A);
+                
                 brush = new SolidBrush(color);
                 Monitor.Enter(animator);
                 animator.Start(new Ring(color, rectangle));

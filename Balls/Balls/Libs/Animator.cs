@@ -40,10 +40,8 @@ namespace Balls{
                 Monitor.Enter(_obj);
                 _bgChanged = false;
                 Graphics g = _bg.Graphics;
-                
-                Monitor.Exit(_obj);
                 g.Clear(Color.White);
-
+                Monitor.Exit(_obj);    
                 Monitor.Enter(_items);
                 int cnt = _items.Count;
                 for (int i = 0; i < cnt; i++) {
@@ -53,7 +51,10 @@ namespace Balls{
                         cnt--;
                     }
                 }
+                Monitor.Enter(_obj);
                 foreach (var item in _items) {item.Draw(g); }
+                Monitor.Exit(_obj);
+
                 Monitor.Exit(_items);
                 Monitor.Enter(_obj);
                 if (!_bgChanged) {
